@@ -1,3 +1,12 @@
+"""
+Script Name: _open_ai_abc.py
+Author: Vikas Datir
+Date: 14/02/2024
+Last Modified: 14/02/2024
+Purpose: A OpenAI_API_Interface class defined using abstract class to implement required methods
+"""
+
+
 from _open_ai_abc import OpenAI_ABC
 from openai import OpenAI
 import tiktoken as tkn
