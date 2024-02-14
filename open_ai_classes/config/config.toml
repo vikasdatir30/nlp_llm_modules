@@ -1,2 +1,15 @@
+#   Tiktoken Note
+#   tiktoken supports three encodings used by OpenAI models:
+#   Encoding name	OpenAI models
+#   cl100k_base	    gpt-4, gpt-3.5-turbo, text-embedding-ada-002, text-embedding-3-small, text-embedding-3-large
+#   p50k_base	    Codex models, text-davinci-002, text-davinci-003
+#   r50k_base       GPT-3 models like davinci
+
+
 [open_ai]
-OPENAI_API_KEY="add your key"
+OPENAI_API_KEY = "add your key"
+tiktoken_encoding = "cl100k_base"
+
+
+
+

@@ -7,8 +7,7 @@ Purpose: A OpenAI_API_Interface class defined using abstract class to implement 
 """
 
 
-from _open_ai_abc import OpenAI_ABC
-from openai import OpenAI
+from open_ai_classes.base_abstract._open_ai_abc import OpenAI_ABC
 import tiktoken as tkn
 import os
 import tomli
@@ -29,9 +28,14 @@ class OpenAI_API_Interface(OpenAI_ABC):
         except Exception as e:
             print("Error in  ", e)
 
-    def get_token_count(self):
-        pass
-
+    def get_token_count(self, input_string:str):
+        try:
+            """Returns the number of tokens in a text string."""
+            encoding = tkn.get_encoding(self.open_ai_config['tiktoken_encoding'])
+            num_tokens = len(encoding.encode(input_string))
+            return num_tokens
+        except :
+            print("Error in ")
 
 
 def get_config(config_file_path):
@@ -50,3 +54,4 @@ if __name__ =="__main__":
     config_path = os.getcwd() + "/config/config.toml"
     _conf = get_config(config_path)
     s = OpenAI_API_Interface(_conf)
+    print(s.get_token_count("Hello"))
