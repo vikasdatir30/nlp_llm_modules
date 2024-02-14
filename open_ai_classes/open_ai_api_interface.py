@@ -10,32 +10,57 @@ from open_ai_classes.base_abstract._open_ai_abc import OpenAI_ABC
 import tiktoken as tkn
 import os
 import tomli
+import logging
+from datetime import datetime as dt
+
+run_date = str(dt.now().strftime("%Y_%m_%d_%H%M%S"))
+
+logging.basicConfig(level=logging.INFO)
 
 
 class OpenAiInterface(OpenAI_ABC):
     def __init__(self, config: dict):
+        self.logger = logging.getLogger("OpenAiInterface")
+        self.logger.setLevel(logging.DEBUG)
+
+        # Create a file handler and set the level to debug
+        log_file = "OpenAiInterface_log_" + run_date + ".log"
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.DEBUG)
+
+        # Create a formatter and set the formatter for the handler
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+
+        # Add the handler to the logger
+        self.logger.addHandler(file_handler)
+
         self.open_ai_config = config['open_ai']
         try:
+
+            # searching key in env variables or in config
             if "OPENAI_API_KEY" in os.environ.keys():
                 self.OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+                self.logger.info("OPENAI_API_KEY found in environment variable")
 
             elif "OPENAI_API_KEY" in self.open_ai_config.keys():
                 self.OPENAI_API_KEY = self.open_ai_config['OPENAI_API_KEY']
+                self.logger.info("OPENAI_API_KEY found in config variable")
 
             else:
-                raise Exception('OPENAI_API_KEY is not set')
+                raise Exception("OPENAI_API_KEY not found")
 
         except Exception as e:
-            print("Error in  ", e)
+            self.logger.error(str(e) + " - Please set OPENAI_API_KEY key in env variable or in config file.")
 
     def get_token_count(self, input_text) -> int:
         try:
             """Returns the number of tokens for a input string."""
-            encoding = tkn.get_encoding(self.open_ai_config['tiktoken_encoding'])
+            encoding = tkn.encoding_for_model(self.open_ai_config['llm_model'])
             num_tokens = len(encoding.encode(input_text))
             return num_tokens
-        except Exception as e :
-            print("Error in ", e)
+        except Exception as e:
+            self.logger.error("Error in get_token_count method - "+str(e))
 
 
 def get_config(config_file_path):

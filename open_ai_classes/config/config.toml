@@ -8,6 +8,7 @@
 
 [open_ai]
 OPENAI_API_KEY = "add your key"
+llm_model = "gpt-3.5-turbo"
 tiktoken_encoding = "cl100k_base"
 
 
