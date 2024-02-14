@@ -28,14 +28,14 @@ class OpenAiInterface(OpenAI_ABC):
         except Exception as e:
             print("Error in  ", e)
 
-    def get_token_count(self, input_string: str):
+    def get_token_count(self, input_text) -> int:
         try:
-            """Returns the number of tokens in a text string."""
+            """Returns the number of tokens for a input string."""
             encoding = tkn.get_encoding(self.open_ai_config['tiktoken_encoding'])
-            num_tokens = len(encoding.encode(input_string))
+            num_tokens = len(encoding.encode(input_text))
             return num_tokens
-        except:
-            print("Error in ")
+        except Exception as e :
+            print("Error in ", e)
 
 
 def get_config(config_file_path):

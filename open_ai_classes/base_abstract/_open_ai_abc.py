@@ -14,7 +14,7 @@ from abc import ABC, abstractmethod
 
 class OpenAI_ABC(ABC):
     @abstractmethod
-    def get_token_count(self):
+    def get_token_count(self, input_text):
         pass
 
 
