@@ -5,6 +5,7 @@ Date: 14/02/2024
 Last Modified: 14/02/2024
 Purpose: A OpenAiInterface class defined using abstract class to implement required methods
 """
+from abc import ABC
 
 from open_ai_classes.base_abstract._open_ai_abc import OpenAI_ABC
 import tiktoken as tkn
@@ -18,7 +19,7 @@ run_date = str(dt.now().strftime("%Y_%m_%d_%H%M%S"))
 logging.basicConfig(level=logging.INFO)
 
 
-class OpenAiInterface(OpenAI_ABC):
+class OpenAiInterface(OpenAI_ABC, ABC):
     def __init__(self, config: dict):
         self.logger = logging.getLogger("OpenAiInterface")
         self.logger.setLevel(logging.DEBUG)
@@ -61,6 +62,23 @@ class OpenAiInterface(OpenAI_ABC):
             return num_tokens
         except Exception as e:
             self.logger.error("Error in get_token_count method - "+str(e))
+
+    def get_chat_prompt_template(self, system_content, user_content):
+        try:
+            prompt_template =[
+                {
+                    "role": "system",
+                    "content": system_content
+                },
+                {
+                    "role": "user",
+                    "content": user_content
+                }
+            ]
+
+            return prompt_template
+        except Exception as e:
+            self.logger.error("Error in get_chat_prompt_template method - " + str(e))
 
 
 def get_config(config_file_path):

@@ -16,5 +16,10 @@ class OpenAI_ABC(ABC):
     @abstractmethod
     def get_token_count(self, input_text):
         pass
+    @abstractmethod
+    def get_chat_prompt_template(self, system_content, user_content):
+        pass
 
-
+    @abstractmethod
+    def get_train_prompt_template(self, system_content, user_content, assistant_content):
+        pass
