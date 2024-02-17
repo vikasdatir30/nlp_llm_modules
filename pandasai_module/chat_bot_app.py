@@ -3,8 +3,9 @@ Script Name: chat_bot_app.py
 Author: Vikas Datir
 Date: 07/02/2024
 Last Modified: 17/02/2024
-Purpose: A chatbot to demonstrate use of pandasai
+Purpose: A chatbot to demonstrate use of pandasai.
 """
+
 
 import streamlit as st
 import os

@@ -1,4 +1,4 @@
 openai
+tomli
 streamlit
 pandasai
-tomli
