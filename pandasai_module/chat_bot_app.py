@@ -14,6 +14,7 @@ from pandasai import SmartDataframe
 import pandas as pd
 from pandasai.llm.openai import OpenAI
 
+
 file_store_path = "file_storage"
 file_select = ""
 
@@ -68,7 +69,8 @@ def generate_response(question):
 
         print(raw_df)
         llm = OpenAI(openai_api_key)
-        df = SmartDataframe(raw_df, config={"llm": llm, "conversational": False, "model": "GPT-3.5-turbo-0613"})
+        df = SmartDataframe(raw_df, config={"llm": llm, "conversational": False, "model": "GPT-3.5-turbo-0613",
+                                            "open_charts":False,})
 
         with get_openai_callback() as cb:
             response = df.chat(question)
@@ -90,13 +92,17 @@ def chat_interface():
                 st.error('Upload valid file')
 
         file_select = st.selectbox("Select file", options=os.listdir(file_store_path))
-
     prompt = st.text_area("Enter your prompt:")
     # Generate output
     if st.button("Generate"):
         if prompt:
             with st.spinner("Generating response..."):
-                st.write(generate_response(prompt))
+                response = generate_response(prompt)
+                st.write(response)
+                if os.path.isfile(response) and response.endswith(".png"):
+                    st.image("exports/charts/"+response.split('/')[-1],
+                         caption="Test", clamp=False, channels="BGR", output_format="png")
+
         else:
             st.warning("Please enter a prompt.")
 
